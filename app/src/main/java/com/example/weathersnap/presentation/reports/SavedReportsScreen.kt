@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.collectAsState
 import com.example.weathersnap.presentation.components.AppHeader
 import com.example.weathersnap.presentation.components.ReportCard
 
@@ -20,7 +20,7 @@ fun SavedReportsScreen(
     onNavigateBack: () -> Unit,
     viewModel: SavedReportsViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier

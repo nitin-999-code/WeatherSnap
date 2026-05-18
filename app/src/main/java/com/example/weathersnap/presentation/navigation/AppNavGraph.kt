@@ -31,6 +31,7 @@ fun AppNavGraph() {
         }
         composable(Routes.CreateReport.route) { backStackEntry ->
             CreateReportScreen(
+                navBackStackEntry = backStackEntry,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToCamera = { navController.navigate(Routes.Camera.route) },
                 onNavigateToReports = {

@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import coil.compose.rememberAsyncImagePainter
 import com.example.weathersnap.presentation.components.AppHeader
 import com.example.weathersnap.presentation.components.WeatherCard
@@ -23,12 +23,21 @@ import java.io.File
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateReportScreen(
+    navBackStackEntry: NavBackStackEntry,
     onNavigateBack: () -> Unit,
     onNavigateToCamera: () -> Unit,
     onNavigateToReports: () -> Unit,
     viewModel: CreateReportViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsState()
+    val capturedImagePath by navBackStackEntry.savedStateHandle.getStateFlow<String?>("captured_image_path", null).collectAsState()
+
+    LaunchedEffect(capturedImagePath) {
+        capturedImagePath?.let { path ->
+            viewModel.onImageCaptured(path)
+            navBackStackEntry.savedStateHandle.remove<String>("captured_image_path")
+        }
+    }
 
     LaunchedEffect(state.saveSuccess) {
         if (state.saveSuccess) {

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.net.URLDecoder
 import java.util.UUID
 import javax.inject.Inject
 
@@ -37,8 +38,9 @@ class CreateReportViewModel @Inject constructor(
     }
 
     private fun restoreState() {
-        val snapshotJson = savedStateHandle.get<String>("snapshotJson")
-        val weatherSnapshot = if (snapshotJson != null) {
+        val snapshotJsonEncoded = savedStateHandle.get<String>("snapshotJson")
+        val weatherSnapshot = if (snapshotJsonEncoded != null) {
+            val snapshotJson = URLDecoder.decode(snapshotJsonEncoded, "UTF-8")
             Gson().fromJson(snapshotJson, WeatherSnapshot::class.java)
         } else null
 
